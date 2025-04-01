@@ -28,7 +28,7 @@ Improved minority class recall without sacrificing overall accuracy — a step t
 ## 👥 Team
 
 Group 2 · U.Porto · 2024/2025  
-[Guilherme Kotchergenko Batista], [Yan Coelho]
+[Guilherme Kotchergenko Batista](https://github.com/GuilhermeKotchergenko), [Yan Coelho]()
 
 ---
 
