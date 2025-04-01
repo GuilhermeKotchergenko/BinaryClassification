@@ -6,13 +6,13 @@ A hands-on machine learning project for U.Porto's **Machine Learning I (CC2008)*
 
 - **Challenge**: Class imbalance.
 - **Approach**: Implemented a classic ML algorithm from scratch and made it smarter.
-- **Goal**: Boost performance where the minority class actually matters.
+- **Goal**: Boost performance where the minority class matters.
 
 ## 🛠️ What We Did
 
-- Chose and coded a classifier in **pure Python** (no scikit-learn).
+- Chose and code a classifier in **pure Python** (no scikit-learn).
 - Evaluated it on +200 benchmark imbalanced datasets.
-- Proposed & tested a custom adjust to handle skewed classes.
+- Proposed & tested a custom adjustment to handle skewed classes.
 - Compared results using F1-score, ROC-AUC, and cross-validation.
 
 ## 🗂️ Key Files
@@ -28,7 +28,7 @@ Improved minority class recall without sacrificing overall accuracy — a step t
 ## 👥 Team
 
 Group 2 · U.Porto · 2024/2025  
-[Guilherme Kotchergenko Batista](https://github.com/GuilhermeKotchergenko), [Yan Coelho]()
+[Guilherme Kotchergenko Batista](https://github.com/GuilhermeKotchergenko), [Yan Coelho](https://github.com/yanoccoelho)
 
 ---
 
