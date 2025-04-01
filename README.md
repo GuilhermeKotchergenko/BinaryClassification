@@ -1,19 +1,19 @@
-# 🧠 ML I Assignment – Fighting Class Imbalance (Binary Classification)
+# 🧠 ML I Assignment – Binary Classification for Class Imbalance
 
 A hands-on machine learning project for U.Porto's **Machine Learning I (CC2008)** course, focused on improving classification performance on **imbalanced binary datasets**.
 
 ## 🚀 Project Highlights
 
-- **Challenge**: Class imbalance — real-world datasets rarely play fair.
+- **Challenge**: Class imbalance.
 - **Approach**: Implemented a classic ML algorithm from scratch and made it smarter.
 - **Goal**: Boost performance where the minority class actually matters.
 
 ## 🛠️ What We Did
 
 - Chose and coded a classifier in **pure Python** (no scikit-learn).
-- Evaluated it on benchmark imbalanced datasets.
-- Proposed & tested a custom tweak to handle skewed classes.
-- Compared results using **F1-score**, **ROC-AUC**, and cross-validation.
+- Evaluated it on +200 benchmark imbalanced datasets.
+- Proposed & tested a custom adjust to handle skewed classes.
+- Compared results using F1-score, ROC-AUC, and cross-validation.
 
 ## 🗂️ Key Files
 
@@ -28,7 +28,7 @@ Improved minority class recall without sacrificing overall accuracy — a step t
 ## 👥 Team
 
 Group 2 · U.Porto · 2024/2025  
-[Name 1], [Name 2], [Name 3]
+[Guilherme Kotchergenko Batista], [Yan Coelho]
 
 ---
 
