@@ -1,3 +1,4 @@
+# Arquivo não modificado do checkpoint a fim de comparação
 import autograd.numpy as np
 from autograd import grad
 

@@ -20,36 +20,47 @@ class LogisticRegression:
         
         self.theta = None
         self.errors = []
-        
-    def sigmoid(self, z):
-        """Função sigmoide: transforma o valor linear em uma probabilidade entre 0 e 1."""
-        return 1 / (1 + np.exp(-z))
+    
+    """
+    temperature = 1.0 → sigmoide padrão.
+    temperature > 1.0 → sigmoide mais achatada.
+    temperature < 1.0 → sigmoide mais íngreme.
+    """
+    def sigmoid(self, z, temperature=2.0):
+        """
+        Função sigmoide achatada com fator de temperatura.
+        Quanto maior a temperatura, mais achatada a curva.
+        """
+        z_clipped = np.clip(z, -30, 30)
+        return 1 / (1 + np.exp(-z_clipped / temperature))
+
     
     def _add_intercept(self, X):
         """Adiciona uma coluna de 1s no início de X para representar o termo de bias."""
         intercept = np.ones((X.shape[0], 1))
         return np.concatenate((intercept, X), axis=1)
     
+   
     def _loss(self, w):
-        """
-        Calcula o custo da entropia cruzada com regularização (se houver).
-        """
+    
         z = np.dot(self.X, w)
         y_pred = self.sigmoid(z)
         
-        # Evita log(0) com clipping
         eps = 1e-15
         y_pred = np.clip(y_pred, eps, 1 - eps)
 
-        loss = -np.mean(self.y * np.log(y_pred) + (1 - self.y) * np.log(1 - y_pred))
+        # Peso maior para a classe 1
+        pos_weight = 10
+        neg_weight = 1
 
-        # Adiciona penalização, ignorando o bias (posição 0)
-        if self.penalty == 'l2':
-            loss += (0.5 * self.C) * np.sum(w[1:] ** 2)
-        elif self.penalty == 'l1':
-            loss += self.C * np.sum(np.abs(w[1:]))
+        weighted_loss = -np.mean(
+            pos_weight * self.y * np.log(y_pred) +
+            neg_weight * (1 - self.y) * np.log(1 - y_pred)
+        )
+        
+        return weighted_loss
 
-        return loss
+
     
     def fit(self, X, y):
         """
