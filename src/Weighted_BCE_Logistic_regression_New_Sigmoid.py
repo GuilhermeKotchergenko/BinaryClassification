@@ -2,7 +2,7 @@ import autograd.numpy as np
 from autograd import grad
 
 class LogisticRegression:
-    def __init__(self, lr=0.01, penalty=None, C=0.01, tolerance=1e-4, max_iters=1000, temperature=1.5, threshold=0.3):
+    def __init__(self, lr=0.01, penalty=None, C=0.01, tolerance=1e-4, max_iters=1000, temperature=1.5, threshold=0.4):
         self.lr = lr
         self.penalty = penalty
         self.C = C

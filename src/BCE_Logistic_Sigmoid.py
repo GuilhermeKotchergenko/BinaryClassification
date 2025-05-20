@@ -54,6 +54,6 @@ class BCE_Logistic_Sigmoid:
         X = self._add_intercept(X)
         return self.sigmoid(np.dot(X, self.theta))
 
-    def predict(self, X, threshold=0.5):
+    def predict(self, X, threshold=0.4):
         probs = self.predict_proba(X)
         return (probs >= threshold).astype(int)
