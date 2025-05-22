@@ -2,7 +2,7 @@ import autograd.numpy as np
 from autograd import grad
 
 class LogisticRegression:
-    def __init__(self, lr=0.01, penalty=None, C=0.01, tolerance=1e-4, max_iters=1000, temperature=1.5, threshold=0.3):
+    def __init__(self, lr=0.01, penalty=None, C=0.01, tolerance=1e-4, max_iters=1000, temperature=0.1, threshold=0.4):
         self.lr = lr
         self.penalty = penalty
         self.C = C
@@ -30,21 +30,31 @@ class LogisticRegression:
         return neg_weight, pos_weight
 
     def _loss(self, w):
+        # Combinação linear + sigmoide com temperatura
         z = np.dot(self.X, w)
         y_pred = self.sigmoid(z)
+
+        # Evita log(0)
         eps = 1e-15
         y_pred = np.clip(y_pred, eps, 1 - eps)
 
-        # Calcular pesos automaticamente
+        # Calcula pesos dinamicamente conforme proporção das classes
         neg_weight, pos_weight = self.calculate_class_weights(self.y)
 
-        # Loss ponderada
-        weighted_loss = -np.mean(
-            pos_weight * self.y * np.log(y_pred) +
-            neg_weight * (1 - self.y) * np.log(1 - y_pred)
+        # Loss de BCE ponderada
+        loss = -np.mean(
+            pos_weight   * self.y       * np.log(y_pred) +
+            neg_weight   * (1 - self.y) * np.log(1 - y_pred)
         )
-        
-        return weighted_loss
+
+        # Regularização L2 (ou L1) — ignora o bias em w[0]
+        if self.penalty == 'l2':
+            loss += 0.5 * self.C * np.sum(w[1:] ** 2)
+        elif self.penalty == 'l1':
+            loss +=       self.C * np.sum(np.abs(w[1:]))
+
+        return loss
+
 
     def fit(self, X, y):
         """Treina o modelo com gradiente descendente."""

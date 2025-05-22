@@ -2,8 +2,10 @@ import autograd.numpy as np
 from autograd import grad
 
 class BCE_Logistic_Sigmoid:
-    def __init__(self, lr=0.001, tolerance=1e-6, max_iters=1000, temperature=1.2):
+    def __init__(self, lr=0.001, penalty=None, C=0.01, tolerance=1e-6, max_iters=1000, temperature=0.1):
         self.lr = lr
+        self.penalty = penalty
+        self.C = C 
         self.tolerance = tolerance
         self.max_iters = max_iters
         self.temperature = temperature
@@ -23,9 +25,20 @@ class BCE_Logistic_Sigmoid:
     def _loss(self, w):
         z = np.dot(self.X, w)
         y_pred = self.sigmoid(z)
+
+        # evita log(0)
         eps = 1e-15
         y_pred = np.clip(y_pred, eps, 1 - eps)
+
+        # loss de BCE pura
         loss = -np.mean(self.y * np.log(y_pred) + (1 - self.y) * np.log(1 - y_pred))
+
+        # regularização L2 (ou L1), ignorando o bias w[0]
+        if self.penalty == 'l2':
+            loss += 0.5 * self.C * np.sum(w[1:] ** 2)
+        elif self.penalty == 'l1':
+            loss +=       self.C * np.sum(np.abs(w[1:]))
+
         return loss
 
     def fit(self, X, y):
@@ -54,6 +67,6 @@ class BCE_Logistic_Sigmoid:
         X = self._add_intercept(X)
         return self.sigmoid(np.dot(X, self.theta))
 
-    def predict(self, X, threshold=0.5):
+    def predict(self, X, threshold=0.4):
         probs = self.predict_proba(X)
         return (probs >= threshold).astype(int)
