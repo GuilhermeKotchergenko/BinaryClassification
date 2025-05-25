@@ -10,7 +10,7 @@
 |                 | Details                                                                                                                        |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | **Goal**        | Build and evaluate a **binary classifier implemented 100 % in pure Python** (no `scikit‑learn`) and make it *imbalance‑aware*. |
-| **Datasets**    | 50 public benchmark datasets with class skew (UCI, KEEL).                                                                   |
+| **Datasets**    | 50 public benchmark datasets with imbalanced classes                                                                   |
 | **Metrics**     | Accuracy, Balanced Accuracy, Precision, Recall, F‑score, ROC‑AUC, G‑mean                                                              |
 | **Outcome**     | Outcome – Weighted New Sigmoid improves minority-class recall by +23 pp (0.69 → 0.85) and balanced-accuracy by +9 pp (0.71 → 0.80) while keeping F1 unchanged. Gains are significant (paired t, p < 0.001 for balanced-acc).                                                   |
 | **Inspiration** | [rushter/MLAlgorithms](https://github.com/rushter/MLAlgorithms) for Logistic Regression logic.            |
