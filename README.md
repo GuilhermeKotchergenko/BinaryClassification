@@ -10,8 +10,8 @@
 |                 | Details                                                                                                                        |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | **Goal**        | Build and evaluate a **binary classifier implemented 100 % in pure Python** (no `scikit‑learn`) and make it *imbalance‑aware*. |
-| **Datasets**    | > 51 public benchmark datasets with class skew (UCI, KEEL).                                                                   |
-| **Metrics**     | F‑score, ROC‑AUC, G‑mean & PR‑AUC under repeated stratified CV.                                                                |
+| **Datasets**    | 50 public benchmark datasets with class skew (UCI, KEEL).                                                                   |
+| **Metrics**     | Accuracy, Balanced Accuracy, Precision, Recall, F‑score, ROC‑AUC, G‑mean                                                              |
 | **Outcome**     | Outcome – Weighted New Sigmoid improves minority-class recall by +23 pp (0.69 → 0.85) and balanced-accuracy by +9 pp (0.71 → 0.80) while keeping F1 unchanged. Gains are significant (paired t, p < 0.001 for balanced-acc).                                                   |
 | **Inspiration** | [rushter/MLAlgorithms](https://github.com/rushter/MLAlgorithms) for Logistic Regression logic.            |
 
@@ -59,30 +59,20 @@ $ jupyter lab notebooks/02_global_execution.ipynb
 
 ## 📈 Key Results
 
-| Model                    |      Accuracy | **Balanced Acc.** |     Precision | **Recall (minority)** |            F1 |       ROC-AUC |
-| ------------------------ | ------------: | ----------------: | ------------: | --------------------: | ------------: | ------------: |
-| **BCE (baseline)**       | 0.929 ± 0.056 | 0.709 ± 0.183 | 0.734 ± 0.307 |     0.688 ± 0.375 |0.688 ± 0.340| 0.874 ± 0.139 |
-| BCE New Sigmoid          | 0.926 ± 0.070 |     0.744 ± 0.196 | 0.702 ± 0.348 |         0.730 ± 0.367 | 0.703 ± 0.356 | 0.868 ± 0.152 |
-| Focal                    | 0.918 ± 0.067 |     0.724 ± 0.191 | 0.691 ± 0.300 |         0.749 ± 0.350 | 0.701 ± 0.318 | 0.874 ± 0.140 |
-| Focal Dynamic Alpha      | 0.641 ± 0.284 |     0.712 ± 0.149 | 0.453 ± 0.355 |     0.969 ± 0.074     | 0.538 ± 0.324 | 0.876 ± 0.137 |
-| Weighted                 | 0.701 ± 0.221 |     0.764 ± 0.142 | 0.490 ± 0.350 |         0.921 ± 0.125 | 0.560 ± 0.298 | 0.872 ± 0.140 |
-| **Weighted New Sigmoid** | 0.843 ± 0.178 | **0.798 ± 0.174** | 0.654 ± 0.336 |     **0.846 ± 0.213** | **0.696 ± 0.300** | 0.866 ± 0.153 |
+Values: Mean ± sd
+
+| Model                | accuracy          | balanced_accuracy   | precision         | recall            | f1                | auc               |
+|:---------------------|:------------------|:--------------------|:------------------|:------------------|:------------------|:------------------|
+| BCE                  | 0.929 ± 0.056 | 0.709 ± 0.183       | 0.734 ± 0.307 | 0.688 ± 0.375     | 0.688 ± 0.341     | 0.874 ± 0.139     |
+| BCE New Sigmoid      | 0.925 ± 0.070     | 0.742 ± 0.199       | 0.702 ± 0.351     | 0.725 ± 0.373     | 0.700 ± 0.361     | 0.861 ± 0.163     |
+| Focal                | 0.918 ± 0.067     | 0.724 ± 0.191       | 0.691 ± 0.300     | 0.749 ± 0.350     | 0.701 ± 0.317 | 0.874 ± 0.140     |
+| Focal Dynamic Alpha  | 0.641 ± 0.284     | 0.712 ± 0.149       | 0.453 ± 0.355     | **0.969 ± 0.074** | 0.538 ± 0.324     | 0.876 ± 0.137 |
+| Weighted             | 0.701 ± 0.221     | 0.764 ± 0.142       | 0.490 ± 0.350     | 0.921 ± 0.125     | 0.560 ± 0.298     | 0.872 ± 0.140     |
+| Weighted_New_Sigmoid | 0.837 ± 0.178     | **0.796 ± 0.175**   | 0.651 ± 0.341     | 0.837 ± 0.214     | 0.690 ± 0.302     | 0.865 ± 0.152     |
 
 
-Black bars in the slide deck illustrate the entry that achieves the highest (and statistically-significant) value (paired Wilcoxon, *p* < 0.05).
+Black bars in the slide deck illustrate the entries that achieves the highest (and statistically-significant) value (paired Wilcoxon, *p* < 0.05).
 
----
-
-## 🛠️ Inside the Classifier
-
-* **Base algorithm** – *(e.g.)* Logistic Regression solved with **batch gradient descent**.
-* **Adjustment** – Class‑dependent **cost term** added to the loss; automatic cost scaling driven by the inverse class frequency.
-* **From‑scratch code** – No `numpy.linalg` black‑boxes 🚫; every derivative is spelled out.
-* **Speed** – Numpy vectorisation + optional Cython (see `setup.cfg`).
-
-For a full derivation see `notebooks/02_custom_adjustment.ipynb` (§ “Deriving the cost‑sensitive loss”).
-
----
 
 ## 📜 Licence
 
