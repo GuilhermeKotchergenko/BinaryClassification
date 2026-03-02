@@ -38,13 +38,10 @@ class LogisticRegression:
         eps = 1e-15
         y_pred = np.clip(y_pred, eps, 1 - eps)
 
-        # Calcula pesos dinamicamente conforme proporção das classes
-        neg_weight, pos_weight = self.calculate_class_weights(self.y)
-
         # Loss de BCE ponderada
         loss = -np.mean(
-            pos_weight   * self.y       * np.log(y_pred) +
-            neg_weight   * (1 - self.y) * np.log(1 - y_pred)
+            self.pos_weight   * self.y       * np.log(y_pred) +
+            self.neg_weight   * (1 - self.y) * np.log(1 - y_pred)
         )
 
         # Regularização L2 (ou L1) — ignora o bias em w[0]
@@ -61,6 +58,8 @@ class LogisticRegression:
         self.X = self._add_intercept(X)
         self.y = y
         n_samples, n_features = self.X.shape
+
+        self.neg_weight, self.pos_weight = self.calculate_class_weights(self.y)
 
         # Inicializa os pesos (theta) com distribuição normal
         self.theta = np.random.normal(loc=0.0, scale=0.01, size=n_features)

@@ -41,12 +41,13 @@ class BCE_Logistic_Sigmoid:
 
         return loss
 
-    def fit(self, X, y):
+    def fit(self, X, y, random_state=42):
         self.X = self._add_intercept(X)
         self.y = y
         n_samples, n_features = self.X.shape
 
-        np.random.seed(42)  # Garantir reprodutibilidade
+        if random_state is not None:
+            np.random.seed(random_state)  # Garantir reprodutibilidade (localmente gerido no argumento da função)
         self.theta = np.random.normal(loc=0.0, scale=0.01, size=n_features)
 
         gradient = grad(self._loss)
@@ -67,6 +68,6 @@ class BCE_Logistic_Sigmoid:
         X = self._add_intercept(X)
         return self.sigmoid(np.dot(X, self.theta))
 
-    def predict(self, X, threshold=0.4):
+    def predict(self, X, threshold=0.5):
         probs = self.predict_proba(X)
         return (probs >= threshold).astype(int)

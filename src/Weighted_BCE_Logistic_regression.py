@@ -44,16 +44,10 @@ class LogisticRegression:
         eps = 1e-15
         y_pred = np.clip(y_pred, eps, 1 - eps)
 
-        # calcula pesos dinamicamente conforme proporção das classes
-        n_pos = np.sum(self.y)
-        n_neg = len(self.y) - n_pos
-        pos_weight = n_neg / (n_pos + n_neg)
-        neg_weight = n_pos / (n_pos + n_neg)
-
         # loss de BCE ponderada
         loss = -np.mean(
-            pos_weight * self.y * np.log(y_pred) +
-            neg_weight * (1 - self.y) * np.log(1 - y_pred)
+            self.pos_weight * self.y * np.log(y_pred) +
+            self.neg_weight * (1 - self.y) * np.log(1 - y_pred)
         )
 
         # regularização (ignora o bias w[0])
@@ -72,6 +66,12 @@ class LogisticRegression:
         self.X = self._add_intercept(X)
         self.y = y
         n_samples, n_features = self.X.shape
+
+        # Calcula e armazena pesos dinâmicos antes de iniciar o gradiente
+        n_pos = np.sum(self.y)
+        n_neg = len(self.y) - n_pos
+        self.pos_weight = n_neg / (n_pos + n_neg)
+        self.neg_weight = n_pos / (n_pos + n_neg)
 
         # Inicializa os pesos (theta) com distribuição normal
         self.theta = np.random.normal(loc=0.0, scale=0.01, size=n_features)
@@ -102,7 +102,7 @@ class LogisticRegression:
         X = self._add_intercept(X)
         return self.sigmoid(np.dot(X, self.theta))
 
-    def predict(self, X, threshold=0.4):
+    def predict(self, X, threshold=0.5):
         """
         Retorna as previsões binárias (0 ou 1) com base nas probabilidades.
         """

@@ -44,13 +44,8 @@ class LogisticRegression:
         eps = 1e-15
         y_pred = np.clip(y_pred, eps, 1 - eps)
 
-        n_pos = np.sum(self.y)
-        n_neg = len(self.y) - n_pos
-        alpha_pos = n_neg / (n_pos + n_neg)   # quanto mais raros os positivos, maior α deles
-        alpha_neg = n_pos / (n_pos + n_neg)
-
         pt = y_pred * self.y + (1 - y_pred) * (1 - self.y)
-        alpha_t = self.y * alpha_pos + (1 - self.y) * alpha_neg
+        alpha_t = self.y * self.alpha_pos + (1 - self.y) * self.alpha_neg
 
         focal_loss = -np.mean(alpha_t * (1 - pt) ** self.gamma * np.log(pt))
 
@@ -67,6 +62,12 @@ class LogisticRegression:
         self.X = self._add_intercept(X)
         self.y = y
         n_samples, n_features = self.X.shape
+
+        n_pos = np.sum(self.y)
+        n_neg = len(self.y) - n_pos
+        # quanto mais raros os positivos, maior α deles
+        self.alpha_pos = n_neg / (n_pos + n_neg)   
+        self.alpha_neg = n_pos / (n_pos + n_neg)
 
         # Inicializa os pesos (theta) com distribuição normal
         self.theta = np.random.normal(loc=0.0, scale=0.01, size=n_features)
@@ -93,7 +94,7 @@ class LogisticRegression:
         X = self._add_intercept(X)
         return self.sigmoid(np.dot(X, self.theta))
 
-    def predict(self, X, threshold=0.4):
+    def predict(self, X, threshold=0.5):
         """Retorna as previsões binárias (0 ou 1) com base nas probabilidades."""
         probs = self.predict_proba(X)
         return (probs >= threshold).astype(int)
